@@ -37,6 +37,6 @@ pip install -r requirements.txt
 
 本项目主要支持以下两类模型：
 
-**ResNet**：用于提取局部空间特征，具有良好的稳定性
+- **ResNet**：由残差连接构建的深度卷积神经网络，能够支持更深层结构的稳定训练。典型结构包括 ResNet-18、ResNet-50 等。
 
-**Vision Transformer (ViT)**：用于建模全局关系，在大规模数据上表现更优
+- **Vision Transformer (ViT)**：基于 Transformer 架构的视觉模型，通过自注意力机制建模全局特征关系。常用配置包括 ViT-Ti/16、ViT-B/16 等。
