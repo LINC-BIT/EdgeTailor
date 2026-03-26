@@ -36,5 +36,7 @@ pip install -r requirements.txt
 # 3. 数据集
 
 本项目主要支持以下两类模型：
+
 **ResNet**：用于提取局部空间特征，具有良好的稳定性
+
 **Vision Transformer (ViT)**：用于建模全局关系，在大规模数据上表现更优
