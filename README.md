@@ -44,4 +44,18 @@ pip install -r requirements.txt
 - [Vit](https://arxiv.org/abs/2010.11929)：Vision Transformer（ViT）将 Transformer 架构应用于图像识别任务。它将图像分割成多个块，然后将这些小块作为序列数据输入到 Transformer 模型中，利用自注意力机制捕捉图像中的全局和局部信息，从而实现高效的图像分类。目前系统支持了TinyPiT以及TinyViT两个网路。
 
 
+# 4. 支持的长尾学习算法
 
+目前系统支持多种经典与最新的长尾学习方法，主要包括基于重采样、数据增强的方法：
+
+- [SRR](https://openaccess.thecvf.com/content_ECCV_2018/html/Dhruv_Mahajan_Exploring_the_Limits_ECCV_2018_paper.html)：本文来自 ECCV (2018)。它通过对类别进行重采样与重加权，缓解长尾分布带来的类别不均衡问题。
+
+- [DCL](https://openaccess.thecvf.com/content_ICCV_2019/html/Wang_Dynamic_Curriculum_Learning_for_Imbalanced_Data_Classification_ICCV_2019_paper.html)：本文来自 ICCV (2019)。它基于动态课程学习策略，逐步调整训练样本分布，从而提升模型对尾类的学习能力。
+
+- [CMO](https://openaccess.thecvf.com/content/CVPR2022/html/Park_The_Majority_Can_Help_the_Minority_Context-Rich_Minority_Oversampling_for_CVPR_2022_paper.html)：本文来自 CVPR (2022)。它通过上下文感知的过采样策略生成少数类样本，从而改善长尾分布。
+  
+- [Remix](https://link.springer.com/chapter/10.1007/978-3-030-65414-6_9)：本文来自 ECCV (2020)。它基于 Mixup 的重采样策略，对不同类别样本进行重组以平衡数据分布。
+
+- [OTmix](https://proceedings.neurips.cc/paper_files/paper/2023/hash/bdabb5d4262bcfb6a1d529d690a6c82b-Abstract-Conference.html)：本文来自 NIPS (2023)。它利用最优传输引导的样本混合策略，实现更合理的类别间数据重分布。
+
+- [GLMC](https://openaccess.thecvf.com/content/CVPR2023/html/Du_Global_and_Local_Mixture_Consistency_Cumulative_Learning_for_Long-Tailed_Visual_CVPR_2023_paper.html)：本文来自 CVPR (2023)。它通过全局与局部一致性约束进行数据增强与表示优化，从而提升长尾场景下的分类性能。
