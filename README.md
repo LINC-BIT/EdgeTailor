@@ -41,4 +41,7 @@ pip install -r requirements.txt
 
 - **ResNet**：由残差连接构建的深度卷积神经网络，能够支持更深层结构的稳定训练。典型结构包括 ResNet-18、ResNet-50 等。
 
-- **Vision Transformer (ViT)**：基于 Transformer 架构的视觉模型，通过自注意力机制建模全局特征关系。常用配置包括 ViT-Ti/16、ViT-B/16 等。
+- **Vision Transformer (ViT)(https://arxiv.org/abs/2010.11929)**：基于 Transformer 架构的视觉模型，通过自注意力机制建模全局特征关系。常用配置包括 ViT-Ti/16、ViT-B/16 等。
+
+
+
