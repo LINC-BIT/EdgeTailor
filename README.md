@@ -39,9 +39,9 @@ pip install -r requirements.txt
 
 本项目主要支持以下两类模型：
 
-- **ResNet**：由残差连接构建的深度卷积神经网络，能够支持更深层结构的稳定训练。典型结构包括 ResNet-18、ResNet-50 等。
+- [ResNet](https://openaccess.thecvf.com/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html)：该模型由多个卷积层和池化层组成，用于提取图像中的信息。通常，当网络深度较大时，ResNet 容易出现梯度消失（爆炸）现象，性能下降。因此，ResNet 添加了 BatchNorm 来缓解梯度消失（爆炸），并添加了残差连接来缓解性能下降。
 
-- **Vision Transformer (ViT)(https://arxiv.org/abs/2010.11929)**：基于 Transformer 架构的视觉模型，通过自注意力机制建模全局特征关系。常用配置包括 ViT-Ti/16、ViT-B/16 等。
+- [Vit](https://arxiv.org/abs/2010.11929)：Vision Transformer（ViT）将 Transformer 架构应用于图像识别任务。它将图像分割成多个块，然后将这些小块作为序列数据输入到 Transformer 模型中，利用自注意力机制捕捉图像中的全局和局部信息，从而实现高效的图像分类。目前系统支持了TinyPiT以及TinyViT两个网路。
 
 
 
