@@ -94,7 +94,80 @@ def classify_domain(brightness, contrast, highlight_ratio):
     return "dark"
 ```
 
+## 1.2 任务划分
 
+本系统基于真实航拍应用场景对数据进行任务划分，以更贴近实际环境中的数据分布特性。以典型场景划分为例，可将任务划分为海军行动、商业航运、渔业活动监测及海上支援等阶段，其中各任务对应的类别划分如下：
+
+```python
+TASK_SPLIT = {
+    "T1_naval": [
+        "aircraft carrier",
+        "destroyer",
+        "frigate",
+        "cruiser",
+        "submarine",
+        "amphibious assault ship",
+        "amphibious transport dock",
+        "landing craft",
+        "command ship",
+    ],
+
+    "T2_shipping": [
+        "container ship",
+        "bulk carrier",
+        "oil tanker",
+        "liquefied gas ship",
+        "car carrier",
+        "passenger ship",
+    ],
+
+    "T3_fishing": [
+        "fishing boat",
+    ],
+
+    "T4_support": [
+        "auxiliary ship",
+        "medical ship",
+        "hovercraft",
+        "barge",
+        "combat boat",
+    ]
+}
+```
+
+适用下面的代码进行任务划分：
+
+```python
+def build_tasks(unified_root, output_root):
+    stats = defaultdict(int)
+    for class_id in os.listdir(unified_root):
+        class_path = os.path.join(unified_root, class_id)
+
+        if not os.path.isdir(class_path):
+            continue
+
+        class_id_int = int(class_id.replace("class_", ""))
+        class_name = ID2CLASS[class_id_int]
+
+        task_name = None
+        for t, class_list in TASK_SPLIT.items():
+            if class_name in class_list:
+                task_name = t
+                break
+
+        if task_name is None:
+            continue
+
+        dst_class_dir = os.path.join(output_root, task_name, class_id)
+        make_dir(dst_class_dir)
+
+        for img in os.listdir(class_path):
+            src = os.path.join(class_path, img)
+            dst = os.path.join(dst_class_dir, img)
+
+            shutil.copy(src, dst)
+            stats[task_name] += 1
+```
 
 # 2. 模型
 
