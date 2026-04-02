@@ -16,10 +16,58 @@
 
 - [ShipRSImageNet](https://www.mdpi.com/1424-8220/22/9/3243)：原始为目标检测数据集。本文通过裁剪标注框区域提取船舶目标，并转换为图像分类数据，用于增强数据规模与类别覆盖范围。
 
-- DSCR：包含多场景、多背景下的航拍船舶图像，具有较强的环境变化特性，有助于评估模型的跨域泛化能力。求。
+- DSCR：包含多场景、多背景下的航拍船舶图像，具有较强的环境变化特性，有助于评估模型的跨域泛化能力。
 
-在数据构建过程中，本文保留各数据集原始类别分布，使整体数据呈现自然长尾特性，从而更贴近真实应用场景中“头类丰富、尾类稀缺”的分布规律。
+## 1.1 长尾分布模拟
 
+基于设定的类别不均衡类型（如指数型或阶梯型），对每个类别的样本数量进行控制，从而构造符合长尾分布的数据划分：
+
+```python
+def get_img_num_per_cls(self, cls_num, imb_type, imb_factor):
+    img_max = len(self.data) / cls_num
+    img_num_per_cls = []
+
+    if imb_type == 'exp':
+        for cls_idx in range(cls_num):
+            num = img_max * (imb_factor ** (cls_idx / (cls_num - 1.0)))
+            img_num_per_cls.append(int(num))
+
+    elif imb_type == 'step':
+        for cls_idx in range(cls_num // 2):
+            img_num_per_cls.append(int(img_max))
+        for cls_idx in range(cls_num // 2):
+            img_num_per_cls.append(int(img_max * imb_factor))
+
+    else:
+        img_num_per_cls.extend([int(img_max)] * cls_num)
+
+    return img_num_per_cls
+```
+
+在获得每个类别的目标样本数量后，根据类别索引对原始数据进行裁剪与重组，从而生成符合长尾分布的新数据集：
+
+```python
+def gen_imbalanced_data(self, img_num_per_cls):
+    new_data = []
+    new_targets = []
+
+    targets_np = np.array(self.targets, dtype=np.int64)
+    classes = np.unique(targets_np)
+
+    self.num_per_cls_dict = dict()
+
+    for the_class, the_img_num in zip(classes, img_num_per_cls):
+        self.num_per_cls_dict[the_class] = the_img_num
+
+        idx = np.where(targets_np == the_class)[0]
+        selec_idx = idx[:the_img_num]
+
+        new_data.append(self.data[selec_idx, ...])
+        new_targets.extend([the_class] * the_img_num)
+
+    self.data = np.vstack(new_data)
+    self.targets = new_targets
+```
 
 # 2. 模型
 
