@@ -69,6 +69,33 @@ def gen_imbalanced_data(self, img_num_per_cls):
     self.targets = new_targets
 ```
 
+## 1.2 域划分
+
+为构建具有显著域偏移特性的训练数据，本系统结合图像平均亮度、对比度以及高亮像素比例等多维特征，对数据进行强光与弱光划分。其中，强光样本通常具有较高的对比度及明显的局部高亮区域，而弱光样本则表现为整体亮度较低且对比度较弱。
+
+```python
+def compute_features(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    brightness = gray.mean()          
+    contrast = gray.std()              
+    highlight_ratio = np.mean(gray > 200) 
+
+    return brightness, contrast, highlight_ratio
+
+def classify_domain(brightness, contrast, highlight_ratio):
+
+    if highlight_ratio > 0.05 and contrast > 40:
+        return "bright"
+    
+    if brightness < 90 and contrast < 35:
+        return "dark"
+
+    return "dark"
+```
+
+
+
 # 2. 模型
 
 本项目主要支持以下两类模型：
